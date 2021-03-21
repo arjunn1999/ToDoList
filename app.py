@@ -36,5 +36,16 @@ def delete(sno):
     db.session.delete(todo)
     db.session.commit()
     return redirect("/")
+
+@app.route('/update/<int:sno>',methods=["GET","POST"])
+def update(sno):
+    todo = Todo.query.filter_by(sno=sno).first()
+    if request.method=="GET":
+        return render_template("update.html",todo=todo)
+    else:
+        todo.title=request.form['title']
+        todo.description=request.form['desc']
+        db.session.commit()
+        return redirect("/")
 if __name__ == '__main__':
     app.run(debug=True)
